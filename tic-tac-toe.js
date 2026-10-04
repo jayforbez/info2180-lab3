@@ -5,40 +5,46 @@ window.onload = function () {
     // Get all the squares on the board
     const squares = board.getElementsByTagName("div");
 
-    // Array to keep track of the state of the game
+    // Keep track of the state of the game
     const gameState = [];
 
-    // Keep track of whose turn it is
+    // Keep track of the current player
     let currentPlayer = "X";
 
-    // Add the "square" class and click event to each square
+    // Add the square class and event handlers to each square
     for (let i = 0; i < squares.length; i++) {
+
         // Add the square class
         squares[i].classList.add("square");
 
-        // Add a click event to the square
+        // Add click event
         squares[i].addEventListener("click", function () {
 
-            // Do nothing if the square has already been clicked
-            if (gameState[i]) {
-                return;
-            }
-
-            // Put the current player's mark on the square
+            // Put the current player's mark in the square
             squares[i].textContent = currentPlayer;
 
-            // Add the X or O class for the correct colour
+            // Add the X or O class
             squares[i].classList.add(currentPlayer);
 
-            // Save the move in the game state
+            // Save the move
             gameState[i] = currentPlayer;
 
-            // Switch players
+            // Change players
             if (currentPlayer === "X") {
                 currentPlayer = "O";
             } else {
                 currentPlayer = "X";
             }
+        });
+
+        // Add mouseover event
+        squares[i].addEventListener("mouseover", function () {
+            squares[i].classList.add("hover");
+        });
+
+        // Add mouseout event
+        squares[i].addEventListener("mouseout", function () {
+            squares[i].classList.remove("hover");
         });
     }
 };
