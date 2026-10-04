@@ -5,19 +5,22 @@ window.onload = function () {
     // Get the status message
     const status = document.getElementById("status");
 
+    // Get the New Game button
+    const newGameButton = document.querySelector(".btn");
+
     // Get all the squares
     const squares = board.getElementsByTagName("div");
 
     // Keep track of the game
-    const gameState = [];
+    let gameState = [];
 
     // Keep track of the current player
     let currentPlayer = "X";
 
+
     // Check if there is a winner
     function checkWinner() {
 
-        // All possible winning combinations
         const winningCombinations = [
             [0, 1, 2],
             [3, 4, 5],
@@ -29,7 +32,6 @@ window.onload = function () {
             [2, 4, 6]
         ];
 
-        // Check each combination
         for (let i = 0; i < winningCombinations.length; i++) {
 
             const combination = winningCombinations[i];
@@ -38,7 +40,6 @@ window.onload = function () {
             const second = combination[1];
             const third = combination[2];
 
-            // Check if all three squares contain the same player
             if (
                 gameState[first] &&
                 gameState[first] === gameState[second] &&
@@ -49,6 +50,34 @@ window.onload = function () {
         }
 
         return false;
+    }
+
+
+    // Reset the game
+    function resetGame() {
+
+        // Empty the game state
+        gameState = [];
+
+        // Start with X again
+        currentPlayer = "X";
+
+        // Reset the status message
+        status.textContent =
+            "Move your mouse over a square and click to play an X or an O.";
+
+        // Remove the winner styling
+        status.classList.remove("you-won");
+
+        // Clear all squares
+        for (let i = 0; i < squares.length; i++) {
+
+            squares[i].textContent = "";
+
+            squares[i].classList.remove("X");
+            squares[i].classList.remove("O");
+            squares[i].classList.remove("hover");
+        }
     }
 
 
@@ -76,7 +105,6 @@ window.onload = function () {
                 status.textContent =
                     "Congratulations! " + currentPlayer + " is the Winner!";
 
-                // Add the winner class
                 status.classList.add("you-won");
             }
 
@@ -98,4 +126,8 @@ window.onload = function () {
             squares[i].classList.remove("hover");
         });
     }
+
+
+    // Add click event to New Game button
+    newGameButton.addEventListener("click", resetGame);
 };
