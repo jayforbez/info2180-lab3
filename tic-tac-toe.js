@@ -17,6 +17,9 @@ window.onload = function () {
     // Keep track of the current player
     let currentPlayer = "X";
 
+    // Keep track of whether the game has ended
+    let gameOver = false;
+
 
     // Check if there is a winner
     function checkWinner() {
@@ -59,8 +62,11 @@ window.onload = function () {
         // Empty the game state
         gameState = [];
 
-        // Start with X again
+        // Start with X
         currentPlayer = "X";
+
+        // Allow the game to be played
+        gameOver = false;
 
         // Reset the status message
         status.textContent =
@@ -90,6 +96,16 @@ window.onload = function () {
         // Handle clicking
         squares[i].addEventListener("click", function () {
 
+            // Do nothing if the square is already occupied
+            if (gameState[i]) {
+                return;
+            }
+
+            // Do nothing if the game is already over
+            if (gameOver) {
+                return;
+            }
+
             // Put X or O in the square
             squares[i].textContent = currentPlayer;
 
@@ -105,7 +121,13 @@ window.onload = function () {
                 status.textContent =
                     "Congratulations! " + currentPlayer + " is the Winner!";
 
+                // Add the winner styling
                 status.classList.add("you-won");
+
+                // Stop the game
+                gameOver = true;
+
+                return;
             }
 
             // Change players
