@@ -2,25 +2,66 @@ window.onload = function () {
     // Get the game board
     const board = document.getElementById("board");
 
-    // Get all the squares on the board
+    // Get the status message
+    const status = document.getElementById("status");
+
+    // Get all the squares
     const squares = board.getElementsByTagName("div");
 
-    // Keep track of the state of the game
+    // Keep track of the game
     const gameState = [];
 
     // Keep track of the current player
     let currentPlayer = "X";
 
-    // Add the square class and event handlers to each square
+    // Check if there is a winner
+    function checkWinner() {
+
+        // All possible winning combinations
+        const winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        // Check each combination
+        for (let i = 0; i < winningCombinations.length; i++) {
+
+            const combination = winningCombinations[i];
+
+            const first = combination[0];
+            const second = combination[1];
+            const third = combination[2];
+
+            // Check if all three squares contain the same player
+            if (
+                gameState[first] &&
+                gameState[first] === gameState[second] &&
+                gameState[first] === gameState[third]
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    // Set up each square
     for (let i = 0; i < squares.length; i++) {
 
         // Add the square class
         squares[i].classList.add("square");
 
-        // Add click event
+        // Handle clicking
         squares[i].addEventListener("click", function () {
 
-            // Put the current player's mark in the square
+            // Put X or O in the square
             squares[i].textContent = currentPlayer;
 
             // Add the X or O class
@@ -28,6 +69,16 @@ window.onload = function () {
 
             // Save the move
             gameState[i] = currentPlayer;
+
+            // Check for a winner
+            if (checkWinner()) {
+
+                status.textContent =
+                    "Congratulations! " + currentPlayer + " is the Winner!";
+
+                // Add the winner class
+                status.classList.add("you-won");
+            }
 
             // Change players
             if (currentPlayer === "X") {
@@ -37,12 +88,12 @@ window.onload = function () {
             }
         });
 
-        // Add mouseover event
+        // Add hover effect
         squares[i].addEventListener("mouseover", function () {
             squares[i].classList.add("hover");
         });
 
-        // Add mouseout event
+        // Remove hover effect
         squares[i].addEventListener("mouseout", function () {
             squares[i].classList.remove("hover");
         });
